@@ -3,3 +3,13 @@
 {"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-20T09:55:39+07:00"}
 {"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-20T09:55:58+07:00"}
 {"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-20T21:17:22+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-21T03:30:05+07:00"}
+{"level":"info","msg":"success create table expenses","service":"Database Postgres","time":"2022-12-21T03:30:06+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-21T03:33:13+07:00"}
+{"level":"info","msg":"success create table expenses","service":"Database Postgres","time":"2022-12-21T03:33:13+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-21T03:36:21+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-21T03:36:22+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-21T03:42:52+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-21T03:42:52+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-21T03:43:48+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-21T03:43:48+07:00"}
