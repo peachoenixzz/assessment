@@ -1,0 +1,4 @@
+mode: set
+github.com/peachoenixz/assessment/pkg/environment/read.go:10.38,11.71 1 1
+github.com/peachoenixz/assessment/pkg/environment/read.go:15.2,16.18 2 1
+github.com/peachoenixz/assessment/pkg/environment/read.go:11.71,14.3 2 1
