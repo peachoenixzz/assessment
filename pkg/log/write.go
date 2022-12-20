@@ -23,7 +23,6 @@ func ErrorLog(errDetail interface{}, serv string) {
 	}(f)
 	log.SetOutput(f)
 	// Output to stdout instead of the default stderr
-	// Output to stdout instead of the default stderr
 	log.SetFormatter(&log.TextFormatter{
 		ForceColors:     false,
 		DisableColors:   true,
@@ -38,7 +37,7 @@ func ErrorLog(errDetail interface{}, serv string) {
 	}).Error(errDetail)
 }
 
-func InfoLog(infoDetail string, serv string) {
+func InfoLog(infoDetail interface{}, serv string) {
 	f, err := os.OpenFile(InfoFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0777)
 	if err != nil {
 		fmt.Println("Failed to create logfile" + InfoFile)
@@ -50,7 +49,6 @@ func InfoLog(infoDetail string, serv string) {
 		}
 	}(f)
 	log.SetOutput(f)
-	// Output to stdout instead of the default stderr
 	// Output to stdout instead of the default stderr
 	log.SetFormatter(&log.TextFormatter{
 		ForceColors:     true,
