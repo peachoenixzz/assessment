@@ -1,0 +1,4 @@
+time="2022-12-20 07:04:40" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-20 07:27:47" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-20 07:43:50" level=error msg="open .env: no such file or directory" service=ENV
+time="2022-12-20 07:43:57" level=error msg="open .env: no such file or directory" service=ENV
