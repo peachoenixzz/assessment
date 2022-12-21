@@ -1,32 +1,20 @@
 package expense
 
-import "fmt"
-
-type Service interface {
-	AddExpense(req Request) (int, error)
-}
-
-type ServiceExpense struct {
+type Service struct {
 	Repo Repo
 }
 
-// Repo Expense Service
+// Repo Expense ServiceUseCase
 type Repo interface {
 	InsertExpense(req Request) (int, error)
 }
 
-func NewService(repo Repo) Service {
-	return &ServiceExpense{
+func NewService(repo Repo) ServiceUseCase {
+	return &Service{
 		Repo: repo,
 	}
 }
 
-func (s ServiceExpense) AddExpense(req Request) (int, error) {
-	fmt.Println("registering student: ", s)
-	id, err := s.Repo.InsertExpense(req)
-	if err != nil {
-		return 0, err
-	}
-	fmt.Println("inserted with id: ", req)
-	return id, nil
+func (s Service) AddExpense(req Request) (int, error) {
+	return s.Repo.InsertExpense(req)
 }

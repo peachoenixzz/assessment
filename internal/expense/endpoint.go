@@ -8,10 +8,10 @@ import (
 )
 
 type Endpoint struct {
-	ServiceExpense ServicesExpense
+	Service ServiceUseCase
 }
 
-type ServicesExpense interface {
+type ServiceUseCase interface {
 	AddExpense(req Request) (int, error)
 }
 
@@ -32,9 +32,9 @@ type Response struct {
 	ErrorMessage string   `json:"error_message"`
 }
 
-func NewEndpoint(ServiceExpense ServicesExpense) *Endpoint {
+func NewEndpoint(ServiceExpense ServiceUseCase) *Endpoint {
 	return &Endpoint{
-		ServiceExpense: ServiceExpense,
+		Service: ServiceExpense,
 	}
 }
 
@@ -48,7 +48,7 @@ func (e Endpoint) AddExpense(c echo.Context) error {
 	}
 
 	fmt.Println(req.Title, req.Amount, req.Note, req.Tags)
-	id, err := e.ServiceExpense.AddExpense(req)
+	id, err := e.Service.AddExpense(req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Response{
 			Status:       "Failed",
