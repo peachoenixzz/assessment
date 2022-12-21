@@ -2,7 +2,7 @@ package expense
 
 import (
 	"database/sql"
-
+	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/pkg/log"
 )
 
@@ -35,6 +35,11 @@ func createTable(client *sql.DB) {
 	log.InfoLog("success create table expenses or exists", "Database Postgres")
 }
 
-func (r PostgresRepo) InsertExpense(stdNme string) (string, error) {
-	return "", nil
+func (r PostgresRepo) InsertExpense(req Request) (int, error) {
+	var id int
+	err := r.Client.QueryRow("INSERT INTO expenses (title,amount,note,tags) values ($1,$2,$3,$4) RETURNING id", req.Title, req.Amount, req.Note, pq.Array(req.Tags)).Scan(&id)
+	if err != nil {
+		return id, err
+	}
+	return id, nil
 }

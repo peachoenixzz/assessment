@@ -3,7 +3,7 @@ package expense
 import "fmt"
 
 type Service interface {
-	AddExpense(stdNme string) error
+	AddExpense(req Request) (int, error)
 }
 
 type ServiceExpense struct {
@@ -12,7 +12,7 @@ type ServiceExpense struct {
 
 // Repo Expense Service
 type Repo interface {
-	InsertExpense(stdNme string) (string, error)
+	InsertExpense(req Request) (int, error)
 }
 
 func NewService(repo Repo) Service {
@@ -21,12 +21,12 @@ func NewService(repo Repo) Service {
 	}
 }
 
-func (s ServiceExpense) AddExpense(stdNme string) error {
+func (s ServiceExpense) AddExpense(req Request) (int, error) {
 	fmt.Println("registering student: ", s)
-	_, err := s.Repo.InsertExpense(stdNme)
+	id, err := s.Repo.InsertExpense(req)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	fmt.Println("inserted with id: ", stdNme)
-	return nil
+	fmt.Println("inserted with id: ", req)
+	return id, nil
 }

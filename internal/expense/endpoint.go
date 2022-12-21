@@ -12,19 +12,24 @@ type Endpoint struct {
 }
 
 type ServicesExpense interface {
-	AddExpense(stdNme string) error
+	AddExpense(req Request) (int, error)
 }
 
 type Request struct {
 	Title  string   `json:"title"`
-	Amount int      `json:"amount"`
+	Amount float64  `json:"amount"`
 	Note   string   `json:"note"`
 	Tags   []string `json:"tags"`
 }
 
-type response struct {
-	Status       string `json:"status"`
-	ErrorMessage string `json:"error_message"`
+type Response struct {
+	ID           int      `json:"id"`
+	Title        string   `json:"title"`
+	Amount       float64  `json:"amount"`
+	Note         string   `json:"note"`
+	Tags         []string `json:"tags"`
+	Status       string   `json:"status"`
+	ErrorMessage string   `json:"error_message"`
 }
 
 func NewEndpoint(ServiceExpense ServicesExpense) *Endpoint {
@@ -34,24 +39,30 @@ func NewEndpoint(ServiceExpense ServicesExpense) *Endpoint {
 }
 
 func (e Endpoint) AddExpense(c echo.Context) error {
-	var r Request
-	if err := c.Bind(&r); err != nil {
-		return c.JSON(http.StatusBadRequest, response{
+	var req Request
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),
 		})
 	}
 
-	fmt.Println(r.Title, r.Amount, r.Note, r.Tags)
-	if err := e.ServiceExpense.AddExpense("rrrr"); err != nil {
-		return c.JSON(http.StatusInternalServerError, response{
+	fmt.Println(req.Title, req.Amount, req.Note, req.Tags)
+	id, err := e.ServiceExpense.AddExpense(req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusBadRequest, response{
-		Status:       "Success",
+	return c.JSON(http.StatusBadRequest, Response{
+		ID:           id,
+		Title:        req.Title,
+		Note:         req.Note,
+		Amount:       req.Amount,
+		Tags:         req.Tags,
+		Status:       fmt.Sprintf("%v", http.StatusCreated),
 		ErrorMessage: "",
 	})
 }
