@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,7 +12,14 @@ type Endpoint struct {
 }
 
 type ServicesExpense interface {
-	InsertExpense(stdNme string) error
+	AddExpense(stdNme string) error
+}
+
+type Request struct {
+	Title  string   `json:"title"`
+	Amount int      `json:"amount"`
+	Note   string   `json:"note"`
+	Tags   []string `json:"tags"`
 }
 
 type response struct {
@@ -25,18 +33,17 @@ func NewEndpoint(ServiceExpense ServicesExpense) *Endpoint {
 	}
 }
 
-func (e Endpoint) InsertExpense(c echo.Context) error {
-	var request struct {
-		CustomerName string `json:"customer_name"`
-	}
-	if err := c.Bind(&request); err != nil {
+func (e Endpoint) AddExpense(c echo.Context) error {
+	var r Request
+	if err := c.Bind(&r); err != nil {
 		return c.JSON(http.StatusBadRequest, response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),
 		})
 	}
 
-	if err := e.ServiceExpense.InsertExpense(request.CustomerName); err != nil {
+	fmt.Println(r.Title, r.Amount, r.Note, r.Tags)
+	if err := e.ServiceExpense.AddExpense("rrrr"); err != nil {
 		return c.JSON(http.StatusInternalServerError, response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),

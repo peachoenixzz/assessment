@@ -16,7 +16,7 @@ func serviceRouter() {
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
-	e.POST("/expenses/create", expenseEndpoint.InsertExpense)
+	e.POST("/expenses", expenseEndpoint.AddExpense)
 	log.InfoLog("ECHO PREPARE TO START", "ECHO API")
 	log.ErrorLog(e.Start(":2565"), "ECHO API")
 }

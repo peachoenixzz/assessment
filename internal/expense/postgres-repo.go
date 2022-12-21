@@ -34,3 +34,7 @@ func createTable(client *sql.DB) {
 
 	log.InfoLog("success create table expenses or exists", "Database Postgres")
 }
+
+func (r PostgresRepo) InsertExpense(stdNme string) (string, error) {
+	return "", nil
+}
