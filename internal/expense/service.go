@@ -1,24 +1,20 @@
 package expense
 
-type Service interface {
-	InsertExpense(stdNme string) error
-}
-
-type ServiceExpense struct {
+type Service struct {
 	Repo Repo
 }
 
-// Repo Expense Service
+// Repo Expense ServiceUseCase
 type Repo interface {
+	InsertExpense(req Request) (int, error)
 }
 
-func (s ServiceExpense) InsertExpense(stdNme string) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func NewService(repo Repo) Service {
-	return &ServiceExpense{
+func NewService(repo Repo) ServiceUseCase {
+	return &Service{
 		Repo: repo,
 	}
+}
+
+func (s Service) AddExpense(req Request) (int, error) {
+	return s.Repo.InsertExpense(req)
 }

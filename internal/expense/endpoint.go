@@ -1,50 +1,68 @@
 package expense
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
 type Endpoint struct {
-	ServiceExpense ServicesExpense
+	Service ServiceUseCase
 }
 
-type ServicesExpense interface {
-	InsertExpense(stdNme string) error
+type ServiceUseCase interface {
+	AddExpense(req Request) (int, error)
 }
 
-type response struct {
-	Status       string `json:"status"`
-	ErrorMessage string `json:"error_message"`
+type Request struct {
+	Title  string   `json:"title"`
+	Amount float64  `json:"amount"`
+	Note   string   `json:"note"`
+	Tags   []string `json:"tags"`
 }
 
-func NewEndpoint(ServiceExpense ServicesExpense) *Endpoint {
+type Response struct {
+	ID           int      `json:"id"`
+	Title        string   `json:"title"`
+	Amount       float64  `json:"amount"`
+	Note         string   `json:"note"`
+	Tags         []string `json:"tags"`
+	Status       string   `json:"status"`
+	ErrorMessage string   `json:"error_message"`
+}
+
+func NewEndpoint(ServiceExpense ServiceUseCase) *Endpoint {
 	return &Endpoint{
-		ServiceExpense: ServiceExpense,
+		Service: ServiceExpense,
 	}
 }
 
-func (e Endpoint) InsertExpense(c echo.Context) error {
-	var request struct {
-		CustomerName string `json:"customer_name"`
-	}
-	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, response{
+func (e Endpoint) AddExpense(c echo.Context) error {
+	var req Request
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),
 		})
 	}
 
-	if err := e.ServiceExpense.InsertExpense(request.CustomerName); err != nil {
-		return c.JSON(http.StatusInternalServerError, response{
+	fmt.Println(req.Title, req.Amount, req.Note, req.Tags)
+	id, err := e.Service.AddExpense(req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Response{
 			Status:       "Failed",
 			ErrorMessage: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusBadRequest, response{
-		Status:       "Success",
+	return c.JSON(http.StatusBadRequest, Response{
+		ID:           id,
+		Title:        req.Title,
+		Note:         req.Note,
+		Amount:       req.Amount,
+		Tags:         req.Tags,
+		Status:       fmt.Sprintf("%v", http.StatusCreated),
 		ErrorMessage: "",
 	})
 }
