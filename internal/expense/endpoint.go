@@ -12,7 +12,7 @@ type Endpoint struct {
 
 type ServiceUseCase interface {
 	AddExpense(req Request) (int, error)
-	ViewExpense() (Response, error)
+	ViewExpense() ([]Response, error)
 	ViewExpenseByID(id string) (Response, error)
 	EditExpenseByID(req Request, id string) (Response, error)
 }

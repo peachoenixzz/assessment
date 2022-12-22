@@ -2,6 +2,7 @@ package expense
 
 import (
 	"database/sql"
+
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/pkg/log"
 )
@@ -44,30 +45,41 @@ func (r PostgresRepo) InsertExpense(req Request) (int, error) {
 	return id, nil
 }
 
-func (r PostgresRepo) GetExpense() (Response, error) {
+func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
 	var res Response
-	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses")
+	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses WHERE id=$1")
 	if err != nil {
 		return res, err
 	}
-	err = stmt.QueryRow().Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
+	err = stmt.QueryRow(id).Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
 	if err != nil {
 		return res, err
 	}
 	return res, nil
 }
 
-func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
-	var res Response
-	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses")
+func (r PostgresRepo) GetExpense() ([]Response, error) {
+	var responses []Response
+
+	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses ORDER BY id ASC")
 	if err != nil {
-		return res, err
+		return []Response{}, err
 	}
-	err = stmt.QueryRow().Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
+
+	rows, err := stmt.Query()
 	if err != nil {
-		return res, err
+		return []Response{}, err
 	}
-	return res, nil
+
+	for rows.Next() {
+		var res Response
+		err = rows.Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
+		if err != nil {
+			return []Response{}, err
+		}
+		responses = append(responses, res)
+	}
+	return responses, nil
 }
 
 func (r PostgresRepo) UpdateExpenseByID(req Request, id string) (Response, error) {

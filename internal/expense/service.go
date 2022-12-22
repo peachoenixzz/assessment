@@ -8,7 +8,7 @@ type Service struct {
 type Repo interface {
 	InsertExpense(req Request) (int, error)
 	GetExpenseByID(id string) (Response, error)
-	GetExpense() (Response, error)
+	GetExpense() ([]Response, error)
 	UpdateExpenseByID(req Request, id string) (Response, error)
 }
 
@@ -22,7 +22,7 @@ func (s Service) AddExpense(req Request) (int, error) {
 	return s.Repo.InsertExpense(req)
 }
 
-func (s Service) ViewExpense() (Response, error) {
+func (s Service) ViewExpense() ([]Response, error) {
 	return s.Repo.GetExpense()
 }
 
