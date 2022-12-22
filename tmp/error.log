@@ -1,1 +1,38 @@
 time="2022-12-20 07:04:40" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:36:55" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:36:55" level=error msg="dial tcp [::1]:5432: connect: connection refused" service="Database Postgres"
+time="2022-12-23 02:39:04" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:39:04" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:40:15" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:40:15" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:43:29" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:43:29" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:49:56" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:49:56" level=error msg="missing \"=\" after \"2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:49:56" level=error msg="listen tcp: address 2565: missing port in address" service="ECHO API"
+time="2022-12-23 02:50:03" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:50:03" level=error msg="missing \"=\" after \"2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:50:03" level=error msg="listen tcp: address 2565: missing port in address" service="ECHO API"
+time="2022-12-23 02:52:37" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:52:37" level=error msg="missing \"=\" after \"2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:52:37" level=error msg="listen tcp: address 2565: missing port in address" service="ECHO API"
+time="2022-12-23 02:52:45" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:52:45" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:53:39" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:53:39" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:53:47" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:53:47" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:54:08" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:54:08" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:55:01" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:55:01" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:55:36" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:55:36" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:56:56" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:56:56" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:57:08" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:57:08" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:58:09" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:58:09" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 02:58:47" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 02:59:56" level=error msg="open environment.env: no such file or directory" service=ENV

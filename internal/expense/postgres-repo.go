@@ -2,6 +2,8 @@ package expense
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/pkg/log"
 )
@@ -42,4 +44,20 @@ func (r PostgresRepo) InsertExpense(req Request) (int, error) {
 		return id, err
 	}
 	return id, nil
+}
+
+func (r PostgresRepo) GetExpense(id string) (Response, error) {
+	var res Response
+	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses WHERE id=$1")
+	if err != nil {
+		err := errors.New(fmt.Sprintf("No statement on db (Err : %v)", err))
+		if err != nil {
+			return res, err
+		}
+		return res, err
+	}
+	row := stmt.QueryRow(id)
+	err = row.Scan(&res.ID, &res.Title, &res.Amount, &res.Note, &res.Tags)
+
+	return res, nil
 }

@@ -12,6 +12,7 @@ type Endpoint struct {
 
 type ServiceUseCase interface {
 	AddExpense(req Request) (int, error)
+	ViewExpense(id string) (Response, error)
 }
 
 type Request struct {
@@ -29,6 +30,11 @@ type Response struct {
 	Tags   []string `json:"tags"`
 }
 
+type Errors struct {
+	Status  int
+	Message string
+}
+
 func NewEndpoint(ServiceExpense ServiceUseCase) *Endpoint {
 	return &Endpoint{
 		Service: ServiceExpense,
@@ -40,7 +46,7 @@ func (e Endpoint) AddExpense(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, 400)
 	}
-	
+
 	id, err := e.Service.AddExpense(req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, 500)
@@ -53,4 +59,14 @@ func (e Endpoint) AddExpense(c echo.Context) error {
 		Amount: req.Amount,
 		Tags:   req.Tags,
 	})
+}
+
+func (e Endpoint) ViewExpense(c echo.Context) error {
+	id := c.Param("id")
+	Response, err := e.Service.ViewExpense(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, Errors{Status: http.StatusInternalServerError, Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusCreated, Response)
 }
