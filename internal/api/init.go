@@ -25,7 +25,7 @@ func (r RouterSession) routerRead(endpoint *expense.Endpoint) {
 }
 
 func (r RouterSession) routerUpdate(endpoint *expense.Endpoint) {
-
+	r.Session.PUT("/expenses/:id", endpoint.EditExpenseByID)
 }
 
 func (r RouterSession) routerCreate(endpoint *expense.Endpoint) {
@@ -41,7 +41,7 @@ func serviceRouter() {
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
 	e.routerRead(expenseEndpoint)
 	e.routerCreate(expenseEndpoint)
-	e.routerRead(expenseEndpoint)
+	e.routerUpdate(expenseEndpoint)
 
 	log.InfoLog("ECHO PREPARE TO START", "ECHO API")
 	log.ErrorLog(e.Session.Start(os.Getenv("PORT")), "ECHO API")
