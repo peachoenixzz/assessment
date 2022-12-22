@@ -36,3 +36,9 @@ time="2022-12-23 02:58:09" level=error msg="open environment.env: no such file o
 time="2022-12-23 02:58:09" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
 time="2022-12-23 02:58:47" level=error msg="open environment.env: no such file or directory" service=ENV
 time="2022-12-23 02:59:56" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 03:05:05" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 03:05:05" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 03:07:56" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 03:07:56" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"
+time="2022-12-23 03:09:29" level=error msg="open environment.env: no such file or directory" service=ENV
+time="2022-12-23 03:09:29" level=error msg="missing \"=\" after \":2565\" in connection info string\"" service="Database Postgres"

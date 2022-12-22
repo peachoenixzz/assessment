@@ -57,7 +57,7 @@ func (r PostgresRepo) GetExpense(id string) (Response, error) {
 		return res, err
 	}
 	row := stmt.QueryRow(id)
-	err = row.Scan(&res.ID, &res.Title, &res.Amount, &res.Note, &res.Tags)
+	err = row.Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
 
 	return res, nil
 }

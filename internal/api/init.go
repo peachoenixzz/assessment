@@ -17,7 +17,7 @@ func serviceRouter() {
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
 	e.POST("/expenses", expenseEndpoint.AddExpense)
-	e.GET("/expenses/:id", expenseEndpoint.ViewExpense)
+	e.GET("/expenses/:id", expenseEndpoint.ViewExpenseByID)
 
 	log.InfoLog("ECHO PREPARE TO START", "ECHO API")
 	log.ErrorLog(e.Start(os.Getenv("PORT")), "ECHO API")
