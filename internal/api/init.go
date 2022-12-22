@@ -1,8 +1,12 @@
 package api
 
 import (
+	"context"
 	"fmt"
+	"net/http"
 	"os"
+	"os/signal"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/peachoenixz/assessment/internal/database"
@@ -10,7 +14,7 @@ import (
 	"github.com/peachoenixz/assessment/pkg/log"
 )
 
-type Router interface {
+type RouterUseCase interface {
 	routerRead(endpoint *expense.Endpoint)
 	routerUpdate(endpoint *expense.Endpoint)
 	routerCreate(endpoint *expense.Endpoint)
@@ -43,13 +47,31 @@ func serviceRouter() {
 	e.routerRead(expenseEndpoint)
 	e.routerCreate(expenseEndpoint)
 	e.routerUpdate(expenseEndpoint)
+	e.gracefulShutdown()
 
-	log.InfoLog("ECHO PREPARE TO START", "ECHO API")
-	log.ErrorLog(e.Session.Start(os.Getenv("PORT")), "ECHO API")
+}
+
+func (r RouterSession) gracefulShutdown() {
+	go func() {
+		if err := r.Session.Start(os.Getenv("PORT")); err != nil && err != http.ErrServerClosed {
+			log.ErrorLog(err.Error(), "ECHO API")
+			r.Session.Logger.Fatal("shutting down the server")
+		}
+		log.InfoLog("ECHO API START", "ECHO API")
+	}()
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt)
+	<-shutdown
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	if err := r.Session.Shutdown(ctx); err != nil {
+		r.Session.Logger.Fatal(err)
+	}
 }
 
 func EchoStart() {
 	serviceRouter()
+
 	log.InfoLog("ECHO API STOP", "ECHO API")
 	fmt.Println("start at port:", os.Getenv("PORT"))
 }
