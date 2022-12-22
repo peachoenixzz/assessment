@@ -20,6 +20,6 @@ func (s Service) AddExpense(req Request) (int, error) {
 	return s.Repo.InsertExpense(req)
 }
 
-func (s Service) ViewExpense(id string) (Response, error) {
+func (s Service) ViewExpenseByID(id string) (Response, error) {
 	return s.Repo.GetExpense(id)
 }
