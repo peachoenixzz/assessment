@@ -199,3 +199,15 @@
 {"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T06:08:44+07:00"}
 {"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T06:08:44+07:00"}
 {"level":"info","msg":"ECHO PREPARE TO START","service":"ECHO API","time":"2022-12-23T06:08:44+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T06:28:11+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T06:28:12+07:00"}
+{"level":"info","msg":"ECHO API START","service":"ECHO API","time":"2022-12-23T06:28:14+07:00"}
+{"level":"info","msg":"ECHO API STOP","service":"ECHO API","time":"2022-12-23T06:28:14+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T06:36:36+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T06:36:36+07:00"}
+{"level":"info","msg":"ECHO API START","service":"ECHO API","time":"2022-12-23T06:39:33+07:00"}
+{"level":"info","msg":"ECHO API STOP","service":"ECHO API","time":"2022-12-23T06:39:33+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T06:39:35+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T06:39:36+07:00"}
+{"level":"info","msg":"ECHO API START","service":"ECHO API","time":"2022-12-23T06:39:39+07:00"}
+{"level":"info","msg":"ECHO API STOP","service":"ECHO API","time":"2022-12-23T06:39:39+07:00"}

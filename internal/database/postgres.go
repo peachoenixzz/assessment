@@ -15,6 +15,7 @@ type PostgresDatabase struct {
 func NewPostgres() *PostgresDatabase {
 	url := os.Getenv("DATABASE_URL")
 	pg, err := sql.Open("postgres", url)
+
 	if err != nil {
 		log.ErrorLog("Error connect", "Database postgres")
 	}

@@ -41,6 +41,7 @@ func serviceRouter() {
 	var e RouterSession
 	e.Session = echo.New()
 	postgresDBClient := database.NewPostgres()
+	defer postgresDBClient.Client.Close()
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
