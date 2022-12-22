@@ -115,3 +115,6 @@
 {"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T03:15:54+07:00"}
 {"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T03:15:55+07:00"}
 {"level":"info","msg":"ECHO PREPARE TO START","service":"ECHO API","time":"2022-12-23T03:15:55+07:00"}
+{"level":"info","msg":"READ ENV FILE SUCCESS","service":"ENV","time":"2022-12-23T04:17:54+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2022-12-23T04:17:55+07:00"}
+{"level":"info","msg":"ECHO PREPARE TO START","service":"ECHO API","time":"2022-12-23T04:17:55+07:00"}
