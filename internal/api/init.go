@@ -22,6 +22,7 @@ type RouterSession struct {
 
 func (r RouterSession) routerRead(endpoint *expense.Endpoint) {
 	r.Session.GET("/expenses/:id", endpoint.ViewExpenseByID)
+	r.Session.GET("/expenses", endpoint.ViewExpense)
 }
 
 func (r RouterSession) routerUpdate(endpoint *expense.Endpoint) {

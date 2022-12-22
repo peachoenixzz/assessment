@@ -2,6 +2,7 @@ package expense
 
 import (
 	"database/sql"
+
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/pkg/log"
 )
@@ -55,6 +56,30 @@ func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
 		return res, err
 	}
 	return res, nil
+}
+
+func (r PostgresRepo) GetExpense() ([]Response, error) {
+	var responses []Response
+
+	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses ORDER BY id ASC")
+	if err != nil {
+		return []Response{}, err
+	}
+
+	rows, err := stmt.Query()
+	if err != nil {
+		return []Response{}, err
+	}
+
+	for rows.Next() {
+		var res Response
+		err = rows.Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
+		if err != nil {
+			return []Response{}, err
+		}
+		responses = append(responses, res)
+	}
+	return responses, nil
 }
 
 func (r PostgresRepo) UpdateExpenseByID(req Request, id string) (Response, error) {
