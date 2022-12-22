@@ -25,7 +25,7 @@ func (ce CustomEnv) customVariableEnv() {
 	if err != nil {
 		return
 	}
-	err = os.Setenv("DATABASE_URL", ce.PORT)
+	err = os.Setenv("DATABASE_URL", ce.DATABASE)
 	if err != nil {
 		return
 	}
