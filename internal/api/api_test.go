@@ -79,3 +79,48 @@ func TestViewExpenseByID(t *testing.T) {
 		assert.Equal(t, expected, strings.TrimSpace(rec.Body.String()))
 	}
 }
+
+func TestAddExpenses(t *testing.T) {
+	//Arrange
+	ex := struct {
+		ID     int      `json:"id"`
+		Title  string   `json:"title"`
+		Amount float64  `json:"amount"`
+		Note   string   `json:"note"`
+		Tags   []string `json:"tags"`
+	}{
+		ID:     1,
+		Title:  "apple bla bla",
+		Amount: 500,
+		Note:   "buy apple but no discount",
+		Tags:   []string{"market"},
+	}
+
+	jsonParam := `{"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
+
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(string(jsonParam)))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	rec := httptest.NewRecorder()
+	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual)) //sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual)
+
+	newsMockRows := sqlmock.NewRows([]string{"title", "amount", "note", "tags", "id"}).
+		AddRow("apple bla bla", 500, "buy apple but no discount", pq.Array(&[]string{"market"}), "1")
+
+	mock.ExpectQuery("INSERT INTO expenses (title,amount,note,tags) values ($1,$2,$3,$4) RETURNING title,amount,note,tags,id").
+		WithArgs(ex.Title, ex.Amount, ex.Note, pq.Array(&ex.Tags)).WillReturnRows(newsMockRows)
+
+	expensePostgresRepo := expense.NewPostgresMock(db)
+	expenseServiceAPI := expense.NewService(expensePostgresRepo)
+	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
+	c := e.NewContext(req, rec)
+	expected := `{"id":1,"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
+	// Act
+	err = expenseEndpoint.AddExpense(c)
+
+	// Assertions
+	if assert.NoError(t, err) {
+		assert.Equal(t, http.StatusCreated, rec.Code)
+		assert.Equal(t, expected, strings.TrimSpace(rec.Body.String()))
+	}
+}
