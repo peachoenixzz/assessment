@@ -70,7 +70,7 @@ func (e Endpoint) ViewExpenseByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Errors{Status: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusCreated, Response)
+	return c.JSON(http.StatusOK, Response)
 }
 
 func (e Endpoint) ViewExpense(c echo.Context) error {
@@ -79,7 +79,7 @@ func (e Endpoint) ViewExpense(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Errors{Status: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusCreated, Response)
+	return c.JSON(http.StatusOK, Response)
 }
 
 func (e Endpoint) EditExpenseByID(c echo.Context) error {
@@ -94,5 +94,5 @@ func (e Endpoint) EditExpenseByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, Errors{Status: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusCreated, Response)
+	return c.JSON(http.StatusOK, Response)
 }
