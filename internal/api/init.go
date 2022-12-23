@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"crypto/subtle"
 	"fmt"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/peachoenixz/assessment/internal/database"
 	"github.com/peachoenixz/assessment/internal/expense"
 	"github.com/peachoenixz/assessment/pkg/log"
@@ -24,9 +26,21 @@ type RouterSession struct {
 	Session *echo.Echo
 }
 
+func Auth() echo.MiddlewareFunc {
+	res := middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		// Be careful to use constant time comparison to prevent timing attacks
+		if subtle.ConstantTimeCompare([]byte(username), []byte("apidesign")) == 1 &&
+			subtle.ConstantTimeCompare([]byte(password), []byte("123456")) == 1 {
+			return true, nil
+		}
+		return false, nil
+	})
+	return res
+}
+
 func (r RouterSession) routerRead(endpoint *expense.Endpoint) {
 	r.Session.GET("/expenses/:id", endpoint.ViewExpenseByID)
-	r.Session.GET("/expenses", endpoint.ViewExpense)
+	r.Session.GET("/expenses", endpoint.ViewExpense, Auth())
 }
 
 func (r RouterSession) routerUpdate(endpoint *expense.Endpoint) {
@@ -40,6 +54,8 @@ func (r RouterSession) routerCreate(endpoint *expense.Endpoint) {
 func serviceRouter() {
 	var e RouterSession
 	e.Session = echo.New()
+	e.Session.Use(middleware.Logger())
+	e.Session.Use(middleware.Recover())
 	postgresDBClient := database.NewPostgres()
 	defer postgresDBClient.Client.Close()
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
