@@ -3,10 +3,12 @@ package api
 import (
 	"context"
 	"crypto/subtle"
+	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -24,6 +26,7 @@ type RouterUseCase interface {
 
 type RouterSession struct {
 	Session *echo.Echo
+	Client  *sql.DB
 }
 
 func Auth() echo.MiddlewareFunc {
@@ -57,7 +60,6 @@ func serviceRouter() {
 	e.Session.Use(middleware.Logger())
 	e.Session.Use(middleware.Recover())
 	postgresDBClient := database.NewPostgres()
-	defer postgresDBClient.Client.Close()
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
@@ -77,12 +79,22 @@ func (r RouterSession) gracefulShutdown() {
 		log.InfoLog("ECHO API START", "ECHO API")
 	}()
 	shutdown := make(chan os.Signal, 1)
-	signal.Notify(shutdown, os.Interrupt)
+	signal.Notify(shutdown, syscall.SIGTERM)
+	signal.Notify(shutdown, syscall.SIGINT)
 	<-shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
 	if err := r.Session.Shutdown(ctx); err != nil {
-		r.Session.Logger.Fatal(err)
+		fmt.Printf("Error shutting down server %s", err)
+	} else {
+		fmt.Println("Server gracefully stopped")
+	}
+
+	if err := r.Client.Close(); err != nil {
+		fmt.Printf("Error closing db connection %s", err)
+	} else {
+		fmt.Println("DB connection gracefully closed")
 	}
 }
 

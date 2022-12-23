@@ -60,7 +60,6 @@ func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
 
 func (r PostgresRepo) GetExpense() ([]Response, error) {
 	var responses []Response
-
 	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses ORDER BY id ASC")
 	if err != nil {
 		return []Response{}, err
