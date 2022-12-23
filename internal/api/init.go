@@ -30,7 +30,7 @@ type RouterSession struct {
 }
 
 func Auth() echo.MiddlewareFunc {
-	res := middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+	return middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
 		// Be careful to use constant time comparison to prevent timing attacks
 		if subtle.ConstantTimeCompare([]byte(username), []byte("apidesign")) == 1 &&
 			subtle.ConstantTimeCompare([]byte(password), []byte("123456")) == 1 {
@@ -38,7 +38,6 @@ func Auth() echo.MiddlewareFunc {
 		}
 		return false, nil
 	})
-	return res
 }
 
 func (r RouterSession) routerRead(endpoint *expense.Endpoint) {
