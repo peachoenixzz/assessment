@@ -59,6 +59,7 @@ func serviceRouter() {
 	e.Session.Use(middleware.Logger())
 	e.Session.Use(middleware.Recover())
 	postgresDBClient := database.NewPostgres()
+	e.Client = postgresDBClient.Client
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
 	expenseEndpoint := expense.NewEndpoint(expenseServiceAPI)
@@ -101,5 +102,4 @@ func EchoStart() {
 	serviceRouter()
 
 	log.InfoLog("ECHO API STOP", "ECHO API")
-	fmt.Println("start at port:", os.Getenv("PORT"))
 }
