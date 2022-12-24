@@ -14,32 +14,29 @@ type CustomEnv struct {
 }
 
 func (ce CustomEnv) checkCustomEnv() bool {
-	if ce.PORT != "" && ce.DATABASE != "" {
-		return true
-	}
-	return false
+	return ce.PORT != "" && ce.DATABASE != ""
 }
 
-func (ce CustomEnv) customVariableEnv() {
-	err := os.Setenv("PORT", ce.PORT)
-	if err != nil {
-		return
-	}
-	err = os.Setenv("DATABASE_URL", ce.DATABASE)
-	if err != nil {
-		return
-	}
-}
+//func (ce CustomEnv) customVariableEnv() {
+//	err := os.Setenv("PORT", ce.PORT)
+//	if err != nil {
+//		return
+//	}
+//	err = os.Setenv("DATABASE_URL", ce.DATABASE)
+//	if err != nil {
+//		return
+//	}
+//}
 
 func InitEnv() {
 	ce := CustomEnv{
 		PORT:     os.Getenv("PORT"),
 		DATABASE: os.Getenv("DATABASE_URL"),
 	}
-	ReadEnv("environment")
-	if ce.checkCustomEnv() {
-		ce.customVariableEnv()
+	if !ce.checkCustomEnv() {
+		ReadEnv("environment")
 	}
+	//ReadEnv("environment")
 }
 
 func ReadEnv(filename string) string {
