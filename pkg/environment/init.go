@@ -17,17 +17,6 @@ func (ce CustomEnv) checkCustomEnv() bool {
 	return ce.PORT != "" && ce.DATABASE != ""
 }
 
-//func (ce CustomEnv) customVariableEnv() {
-//	err := os.Setenv("PORT", ce.PORT)
-//	if err != nil {
-//		return
-//	}
-//	err = os.Setenv("DATABASE_URL", ce.DATABASE)
-//	if err != nil {
-//		return
-//	}
-//}
-
 func InitEnv() {
 	ce := CustomEnv{
 		PORT:     os.Getenv("PORT"),

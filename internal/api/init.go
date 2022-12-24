@@ -100,6 +100,5 @@ func (r RouterSession) gracefulShutdown() {
 
 func EchoStart() {
 	serviceRouter()
-
 	log.InfoLog("ECHO API STOP", "ECHO API")
 }
