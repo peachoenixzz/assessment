@@ -45,7 +45,6 @@ func (r PostgresRepo) InsertExpense(req Request) (Response, error) {
 	err := r.Client.QueryRow("INSERT INTO expenses (title,amount,note,tags) values ($1,$2,$3,$4) RETURNING title,amount,note,tags,id", req.Title, req.Amount, req.Note, pq.Array(req.Tags)).
 		Scan(&res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags), &res.ID)
 	if err != nil {
-		//fmt.Println(err.Error())
 		return Response{}, err
 	}
 	return res, nil
@@ -55,11 +54,11 @@ func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
 	var res Response
 	stmt, err := r.Client.Prepare("SELECT id,title,amount,note,tags FROM expenses WHERE id=$1")
 	if err != nil {
-		return res, err
+		return Response{}, err
 	}
 	err = stmt.QueryRow(id).Scan(&res.ID, &res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags))
 	if err != nil {
-		return res, err
+		return Response{}, err
 	}
 	return res, nil
 }
@@ -84,6 +83,7 @@ func (r PostgresRepo) GetExpense() ([]Response, error) {
 		}
 		responses = append(responses, res)
 	}
+	fmt.Println(responses)
 	return responses, nil
 }
 
@@ -91,13 +91,13 @@ func (r PostgresRepo) UpdateExpenseByID(req Request, id string) (Response, error
 	var res Response
 	stmt, err := r.Client.Prepare("UPDATE expenses SET title=$1,amount=$2,note=$3,tags=$4 WHERE id=$5 RETURNING title,amount,note,tags,id")
 	if err != nil {
-		fmt.Println(err.Error())
-		return res, err
+		log.ErrorLog(err.Error(), "DATABASE")
+		return Response{}, err
 	}
 	err = stmt.QueryRow(req.Title, req.Amount, req.Note, pq.Array(&req.Tags), id).Scan(&res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags), &res.ID)
 	if err != nil {
-		fmt.Println(err.Error())
-		return res, err
+		log.ErrorLog(err.Error(), "DATABASE QUERY ROW")
+		return Response{}, err
 	}
 	return res, nil
 }

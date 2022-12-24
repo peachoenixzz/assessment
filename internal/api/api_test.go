@@ -5,6 +5,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/internal/expense"
 	"net/http"
@@ -122,10 +123,14 @@ func TestAddExpenses(t *testing.T) {
 
 func TestUpdateExpensesByID(t *testing.T) {
 	var ex response
-	jsonString := `{"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
-	json.Unmarshal([]byte(jsonString), &ex)
+	jsonString := `{"title":"Edit : apple not smoothie","amount":150,"note":"have discount","tags":["market"]}`
+	err := json.Unmarshal([]byte(jsonString), &ex)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Printf("%+v", ex)
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPut, "/expenses", strings.NewReader(string(jsonParam)))
+	req := httptest.NewRequest(http.MethodPut, "/expenses", strings.NewReader(jsonString))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 
@@ -137,7 +142,7 @@ func TestUpdateExpensesByID(t *testing.T) {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
 	mock.ExpectPrepare("UPDATE expenses SET title=$1,amount=$2,note=$3,tags=$4 WHERE id=$5 RETURNING title,amount,note,tags,id").ExpectQuery().
-		WithArgs(ex.Title, ex.Amount, ex.Note, pq.Array(&ex.Tags), ex.ID).WillReturnRows(newsMockRows)
+		WithArgs(ex.Title, ex.Amount, ex.Note, pq.Array(&ex.Tags), "1").WillReturnRows(newsMockRows)
 
 	expensePostgresRepo := expense.NewPostgresMock(db)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
@@ -148,7 +153,6 @@ func TestUpdateExpensesByID(t *testing.T) {
 	expected := `{"id":1,"title":"Edit : apple not smoothie","amount":150,"note":"have discount","tags":["market"]}`
 	// Act
 	err = expenseEndpoint.EditExpenseByID(c)
-
 	// Assertions
 	if assert.NoError(t, err) {
 		assert.Equal(t, http.StatusOK, rec.Code)
