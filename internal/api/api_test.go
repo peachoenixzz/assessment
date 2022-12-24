@@ -4,6 +4,7 @@
 package api
 
 import (
+	"encoding/json"
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/internal/expense"
 	"net/http"
@@ -89,19 +90,11 @@ func TestViewExpenseByID(t *testing.T) {
 }
 
 func TestAddExpenses(t *testing.T) {
-	//Arrange
-	ex := response{
-		ID:     "1",
-		Title:  "apple bla bla",
-		Amount: 500,
-		Note:   "buy apple but no discount",
-		Tags:   []string{"market"},
-	}
-
-	jsonParam := `{"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
-
+	var ex response
+	jsonString := `{"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
+	json.Unmarshal([]byte(jsonString), &ex)
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(string(jsonParam)))
+	req := httptest.NewRequest(http.MethodPost, "/expenses", strings.NewReader(jsonString))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual)) //sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual)
@@ -128,15 +121,9 @@ func TestAddExpenses(t *testing.T) {
 }
 
 func TestUpdateExpensesByID(t *testing.T) {
-	// Arrange
-	ex := response{
-		ID:     "1",
-		Title:  "Edit : apple not smoothie",
-		Amount: 150,
-		Note:   "have discount",
-		Tags:   []string{"market"},
-	}
-	jsonParam := `{"title":"Edit : apple not smoothie","amount":150,"note":"have discount","tags":["market"]}`
+	var ex response
+	jsonString := `{"title":"apple bla bla","amount":500,"note":"buy apple but no discount","tags":["market"]}`
+	json.Unmarshal([]byte(jsonString), &ex)
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPut, "/expenses", strings.NewReader(string(jsonParam)))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
