@@ -11,7 +11,7 @@ type Endpoint struct {
 }
 
 type ServiceUseCase interface {
-	AddExpense(req Request) (int, error)
+	AddExpense(req Request) (Response, error)
 	ViewExpense() ([]Response, error)
 	ViewExpenseByID(id string) (Response, error)
 	EditExpenseByID(req Request, id string) (Response, error)
@@ -49,18 +49,12 @@ func (e Endpoint) AddExpense(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, 400)
 	}
 
-	id, err := e.Service.AddExpense(req)
+	Response, err := e.Service.AddExpense(req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Errors{Status: http.StatusInternalServerError, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusCreated, Response{
-		ID:     id,
-		Title:  req.Title,
-		Note:   req.Note,
-		Amount: req.Amount,
-		Tags:   req.Tags,
-	})
+	return c.JSON(http.StatusCreated, Response)
 }
 
 func (e Endpoint) ViewExpenseByID(c echo.Context) error {

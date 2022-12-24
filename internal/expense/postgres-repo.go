@@ -2,7 +2,7 @@ package expense
 
 import (
 	"database/sql"
-
+	"fmt"
 	"github.com/lib/pq"
 	"github.com/peachoenixz/assessment/pkg/log"
 )
@@ -10,6 +10,10 @@ import (
 func NewPostgres(client *sql.DB) Repo {
 	createTable(client)
 	return &PostgresRepo{Client: client}
+}
+
+func NewPostgresMock(Client *sql.DB) Repo {
+	return &PostgresRepo{Client: Client}
 }
 
 type PostgresRepo struct {
@@ -36,13 +40,15 @@ func createTable(client *sql.DB) {
 	log.InfoLog("success create table expenses or exists", "Database Postgres")
 }
 
-func (r PostgresRepo) InsertExpense(req Request) (int, error) {
-	var id int
-	err := r.Client.QueryRow("INSERT INTO expenses (title,amount,note,tags) values ($1,$2,$3,$4) RETURNING id", req.Title, req.Amount, req.Note, pq.Array(req.Tags)).Scan(&id)
+func (r PostgresRepo) InsertExpense(req Request) (Response, error) {
+	var res Response
+	err := r.Client.QueryRow("INSERT INTO expenses (title,amount,note,tags) values ($1,$2,$3,$4) RETURNING title,amount,note,tags,id", req.Title, req.Amount, req.Note, pq.Array(req.Tags)).
+		Scan(&res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags), &res.ID)
 	if err != nil {
-		return id, err
+		//fmt.Println(err.Error())
+		return Response{}, err
 	}
-	return id, nil
+	return res, nil
 }
 
 func (r PostgresRepo) GetExpenseByID(id string) (Response, error) {
@@ -85,10 +91,12 @@ func (r PostgresRepo) UpdateExpenseByID(req Request, id string) (Response, error
 	var res Response
 	stmt, err := r.Client.Prepare("UPDATE expenses SET title=$1,amount=$2,note=$3,tags=$4 WHERE id=$5 RETURNING title,amount,note,tags,id")
 	if err != nil {
+		fmt.Println(err.Error())
 		return res, err
 	}
 	err = stmt.QueryRow(req.Title, req.Amount, req.Note, pq.Array(&req.Tags), id).Scan(&res.Title, &res.Amount, &res.Note, pq.Array(&res.Tags), &res.ID)
 	if err != nil {
+		fmt.Println(err.Error())
 		return res, err
 	}
 	return res, nil

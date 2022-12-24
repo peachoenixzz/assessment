@@ -6,7 +6,7 @@ type Service struct {
 
 // Repo Expense ServiceUseCase
 type Repo interface {
-	InsertExpense(req Request) (int, error)
+	InsertExpense(req Request) (Response, error)
 	GetExpenseByID(id string) (Response, error)
 	GetExpense() ([]Response, error)
 	UpdateExpenseByID(req Request, id string) (Response, error)
@@ -18,7 +18,7 @@ func NewService(repo Repo) ServiceUseCase {
 	}
 }
 
-func (s Service) AddExpense(req Request) (int, error) {
+func (s Service) AddExpense(req Request) (Response, error) {
 	return s.Repo.InsertExpense(req)
 }
 
