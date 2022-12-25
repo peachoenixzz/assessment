@@ -7,7 +7,7 @@ services:
   it_tests:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.integration
     volumes:
       - $PWD:/go/src/target
     depends_on:
@@ -19,7 +19,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: go-example-db
+      POSTGRES_DB: go-db
     restart: on-failure
     volumes:
       - ./db:/docker-entrypoint-initdb.d/

@@ -1,6 +1,7 @@
 package expense
 
 import (
+	"github.com/peachoenixz/assessment/pkg/log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -46,6 +47,7 @@ func NewEndpoint(ServiceExpense ServiceUseCase) *Endpoint {
 func (e Endpoint) AddExpense(c echo.Context) error {
 	var req Request
 	if err := c.Bind(&req); err != nil {
+		log.ErrorLog(err, "bind Add expense")
 		return c.JSON(http.StatusBadRequest, 400)
 	}
 
