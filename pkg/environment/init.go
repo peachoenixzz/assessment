@@ -28,11 +28,11 @@ func InitEnv() {
 	//ReadEnv("environment")
 }
 
-func ReadEnv(filename string) string {
+func ReadEnv(filename string) error {
 	if err := godotenv.Load(fmt.Sprintf("%v.env", filename)); err != nil {
 		log.ErrorLog(err, "ENV")
-		return "failed"
+		return err
 	}
 	log.InfoLog("READ ENV FILE SUCCESS", "ENV")
-	return "success"
+	return nil
 }
