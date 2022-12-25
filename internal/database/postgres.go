@@ -5,19 +5,17 @@ import (
 	"os"
 
 	_ "github.com/lib/pq"
-	"github.com/peachoenixz/assessment/pkg/log"
 )
 
 type PostgresDatabase struct {
 	Client *sql.DB
 }
 
-func NewPostgres() *PostgresDatabase {
+func NewPostgres() (*PostgresDatabase, error) {
 	url := os.Getenv("DATABASE_URL")
 	pg, err := sql.Open("postgres", url)
-
 	if err != nil {
-		log.ErrorLog("Error connect", "Database postgres")
+		return nil, err
 	}
-	return &PostgresDatabase{pg}
+	return &PostgresDatabase{pg}, nil
 }

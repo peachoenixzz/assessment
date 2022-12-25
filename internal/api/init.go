@@ -53,12 +53,15 @@ func (r RouterSession) routerCreate(endpoint *expense.Endpoint) {
 	r.Session.POST("/expenses", endpoint.AddExpense)
 }
 
-func serviceRouter() {
+func serviceRouter() error {
 	var e RouterSession
+	postgresDBClient, err := database.NewPostgres()
+	if err != nil {
+		return err
+	}
 	e.Session = echo.New()
 	e.Session.Use(middleware.Logger())
 	e.Session.Use(middleware.Recover())
-	postgresDBClient := database.NewPostgres()
 	e.Client = postgresDBClient.Client
 	expensePostgresRepo := expense.NewPostgres(postgresDBClient.Client)
 	expenseServiceAPI := expense.NewService(expensePostgresRepo)
@@ -67,7 +70,7 @@ func serviceRouter() {
 	e.routerCreate(expenseEndpoint)
 	e.routerUpdate(expenseEndpoint)
 	e.gracefulShutdown()
-
+	return nil
 }
 
 func (r RouterSession) gracefulShutdown() {
@@ -99,6 +102,9 @@ func (r RouterSession) gracefulShutdown() {
 }
 
 func EchoStart() {
-	serviceRouter()
+	if err := serviceRouter(); err != nil {
+		log.ErrorLog(fmt.Sprintf("Can't service router : %v", err), "ECHO SERVICE")
+		return
+	}
 	log.InfoLog("ECHO API STOP", "ECHO API")
 }
