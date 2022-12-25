@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS "expenses" (
 );
 
 
-INSERT INTO "expenses" ("id", "title", "amount", "note","tags") VALUES (1, 'buy a new phone', 39000, 'buy a new phone' , '{"gadget", "shopping"}');
+INSERT INTO "expenses" ( "title", "amount", "note","tags") VALUES ( 'buy a new phone', 39000, 'buy a new phone' , '{"gadget", "shopping"}');
