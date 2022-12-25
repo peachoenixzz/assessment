@@ -50,7 +50,8 @@ func InfoLog(infoDetail interface{}, serv string) {
 			log.Fatal("bye")
 		}
 	}(f)
-	log.SetOutput(f)
+	mw := io.MultiWriter(os.Stdout, f)
+	log.SetOutput(mw)
 	// Output to stdout instead of the default stderr
 	log.SetFormatter(&log.TextFormatter{
 		ForceColors:     true,
