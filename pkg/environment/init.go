@@ -17,15 +17,18 @@ func (ce CustomEnv) checkCustomEnv() bool {
 	return ce.PORT != "" && ce.DATABASE != ""
 }
 
-func InitEnv() {
+func InitEnv() error {
 	ce := CustomEnv{
 		PORT:     os.Getenv("PORT"),
 		DATABASE: os.Getenv("DATABASE_URL"),
 	}
 	if !ce.checkCustomEnv() {
-		ReadEnv("environment")
+		err := ReadEnv("environment")
+		if err != nil {
+			return err
+		}
 	}
-	//ReadEnv("environment")
+	return nil
 }
 
 func ReadEnv(filename string) error {
