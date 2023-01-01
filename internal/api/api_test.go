@@ -31,7 +31,6 @@ func TestViewExpense(t *testing.T) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/expenses", nil)
 	rec := httptest.NewRecorder()
-
 	newsMockRows := sqlmock.NewRows([]string{"id", "title", "amount", "note", "tags"}).
 		AddRow("1", "apple smoothie", 89, "no discount", pq.Array(&[]string{"beverage"}))
 
