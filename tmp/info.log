@@ -1,0 +1,4 @@
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2023-01-02T04:39:47+07:00"}
+{"level":"info","msg":"ECHO API START","service":"ECHO API","time":"2023-01-02T04:39:54+07:00"}
+{"level":"info","msg":"ECHO API STOP","service":"ECHO API","time":"2023-01-02T04:39:54+07:00"}
+{"level":"info","msg":"success create table expenses or exists","service":"Database Postgres","time":"2023-01-02T04:43:20+07:00"}
