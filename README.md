@@ -5,7 +5,7 @@
 - GET /expenses/:id
 - PUT /expenses/:id
 - GET /expenses
-3. If test with basic auth use `expenses.postman_collection_with_auth.json` or Use username , password
+3. If test with basic auth use `expenses.postman_collection_with_auth.json` and Use username , password
 - Username : apidesign
 - Password : 123456
 
